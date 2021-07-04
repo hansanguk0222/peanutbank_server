@@ -13,6 +13,18 @@ export interface IUser {
   updatedAt: Date;
 }
 
-export interface IUserDocument extends IUser, Document {}
+export interface IUserDocument extends IUser, Document {
+  updateImage: (
+    this: IUserDocument,
+    userId: string,
+    image: string
+  ) => Promise<string>;
+}
 
-export interface IUserModel extends Model<IUserDocument> {}
+export interface IUserModel extends Model<IUserDocument> {
+  findByUserIdOrCreateUser: (
+    this: IUserModel,
+    userId: string,
+    OAuthType: string
+  ) => Promise<IUserDocument>;
+}

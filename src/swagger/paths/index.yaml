@@ -1,0 +1,8 @@
+/hello:
+  get:
+    summary: Returns Hello Text
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/HelloRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'

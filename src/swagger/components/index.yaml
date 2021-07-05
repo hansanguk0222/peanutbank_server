@@ -1,0 +1,26 @@
+components:
+  schemas:
+    Hello:
+      type: object
+      properties:
+        text:
+          type: string
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+  prameters: null
+  responses:
+    HelloRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Hello'
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,7 +1,17 @@
 import mongoose from 'mongoose';
+import { findByIdCategory, findOneByNameOrCreateCategory } from '@/src/statics';
+import { deleteCategory, updateCategoryColor } from '@/src/methods';
 
-export const CategorySchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  name: String,
+const CategorySchema = new mongoose.Schema({
+  name: { type: String, index: true },
   color: String,
+  isExist: Boolean,
 });
+
+CategorySchema.statics.findByIdCategory = findByIdCategory;
+CategorySchema.statics.findOneByNameOrCreateCategory = findOneByNameOrCreateCategory;
+
+CategorySchema.methods.updateCategoryColor = updateCategoryColor;
+CategorySchema.methods.deleteCategory = deleteCategory;
+
+export { CategorySchema };

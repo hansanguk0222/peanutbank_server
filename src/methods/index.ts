@@ -1,1 +1,2 @@
-export * from './user.methods';
+export * from './User.methods';
+export * from './Category.methods';

@@ -1,15 +1,15 @@
-import mongoose from "mongoose";
-import { UserSchema } from "@/src/schema";
+import mongoose from 'mongoose';
+import { UserSchema } from '@/src/schemas';
 
-UserSchema.set("collection", "peanutbank");
+UserSchema.set('collection', 'peanutbank');
 
-export const peanutbankModel = mongoose.model("User", UserSchema);
+export const peanutbankModel = mongoose.model('User', UserSchema);
 
 const database = mongoose.Connection;
 
 export const connect = () => {
   if (database) {
-    console.log("DB에 이미 연결된 상태");
+    console.log('DB에 이미 연결된 상태');
     return;
   }
 
@@ -23,7 +23,7 @@ export const connect = () => {
       useCreateIndex: true,
     })
     .then(() => {
-      console.log("DB 접속 성공");
+      console.log('DB 접속 성공');
     })
     .catch((err) => {
       console.log(err);
@@ -32,10 +32,10 @@ export const connect = () => {
 
 export const disconnect = () => {
   if (!database) {
-    console.log("DB와 이미 끊어진 상태");
+    console.log('DB와 이미 끊어진 상태');
     return;
   }
 
   mongoose.disconnect();
-  console.log("DB 접속 종료");
+  console.log('DB 접속 종료');
 };

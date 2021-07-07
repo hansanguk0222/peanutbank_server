@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { AccountbookSchema } from './Accountbook.schema';
-import { CategorySchema } from './Category.schema';
-import { findByUserIdOrCreateUser } from '@/src/static';
-import { updateImage } from '@/src/method';
+import { AccountbookSchema } from './Accountbook.schemas';
+import { CategorySchema } from './Category.schemas';
+import { findByUserIdOrCreateUser } from '@/src/statics';
+import { updateImage } from '@/src/methods';
 
 const UserSchema = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,

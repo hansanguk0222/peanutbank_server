@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Slack Web API docs
+  description: Slack Web TEAM A의 API 문서입니다
+  license:
+    name: MIT
+Authorization: Bearer <token>
+servers:
+  - url: 'http://localhost:8080/'
+paths:
+  $ref: './paths/index.yaml'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

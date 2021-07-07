@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { LedgerSchema } from "./Ledger.schema";
+import mongoose from 'mongoose';
+import { LedgerSchema } from './Ledger.schema';
 
 export const AccountbookSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,

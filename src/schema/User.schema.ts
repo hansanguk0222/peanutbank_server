@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
-import { AccountbookSchema } from "./Accountbook.schema";
-import { CategorySchema } from "./Category.schema";
-import { findByUserIdOrCreateUser } from "@/src/static";
-import { updateImage } from "@/src/method";
+import mongoose from 'mongoose';
+import { AccountbookSchema } from './Accountbook.schema';
+import { CategorySchema } from './Category.schema';
+import { findByUserIdOrCreateUser } from '@/src/static';
+import { updateImage } from '@/src/method';
 
 const UserSchema = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
+  _id: mongoose.Schema.Types.ObjectId,
   userId: { type: String, required: true, unique: true },
   OAuthType: { type: String, required: true },
   nickname: String,

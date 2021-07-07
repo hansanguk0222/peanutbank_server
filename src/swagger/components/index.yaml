@@ -1,10 +1,120 @@
 components:
   schemas:
+    Accountbook:
+      type: object
+      description: 가계부
+      properties:
+        id:
+          type: string
+        yyyymm:
+          type: string
+        yyyymmValue:
+          type: object
+          properties:
+            expenditure:
+              type: object
+              properties:
+                dd:
+                  type: string
+                ddValue:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Ledger'
+            income:
+              type: object
+              properties:
+                dd:
+                  type: string
+                ddValue:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Ledger'
+        allExpenditure:
+          type: number
+        allIncome:
+          type: number
+        maxExpenditure:
+          type: number
+        maxIncome:
+          type: number
+
+    Ledger:
+      type: object
+      description: 이미 존재하는 장부
+      properties:
+        id:
+          type: string
+          required: false
+        description:
+          type: string
+          required: false
+        amount:
+          type: number
+          required: true
+        categoryId:
+          type: string
+          required: false
+
+    CreateLedger:
+      type: object
+      description: 새로 만드는 장부
+      properties:
+        id:
+          type: string
+          required: false
+        userId:
+          type: string
+          required: true
+        yyyy:
+          type: number
+          required: true
+        mm:
+          type: number
+          required: true
+        dd:
+          type: number
+          required: true
+        incomeOrExpenditure:
+          type: string
+          required: true
+        description:
+          type: string
+          required: false
+        amount:
+          type: number
+          required: true
+        category:
+          type: string
+          required: false
+        categoryId:
+          type: string
+          required: false
+
+    Accountbooks:
+      type: object
+      properties:
+        beforeMonth:
+          yearAndMonth:
+            type: string
+          accountbook:
+            type: object
+        nowMonth:
+          yearAndMonth:
+            type: string
+          accountbook:
+            type: object
+        afterMonth:
+          yearAndMonth:
+            type: string
+          accountbook:
+            type: object
+
     Hello:
       type: object
       properties:
         text:
           type: string
+
     Error:
       type: object
       properties:
@@ -12,15 +122,118 @@ components:
           type: boolean
         message:
           type: string
+
+    User:
+      type: object
+      properties:
+        image:
+          type: string
+        nickname:
+          type: string
+
+    LoginInform:
+      type: object
+      properties:
+        userId:
+          type: string
+
+    UserToken:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        userId:
+          type: string
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+
+    CreateCategoryInform:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+
   prameters: null
+
   responses:
+    OkRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
     HelloRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Hello'
+    GetAccountbooksRequest:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Accountbook'
+    GetAccountbookRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Accountbook'
+    GetLedgersRequest:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Ledger'
+    CreateLedgerRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateLedger'
     BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    InternalServerError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GetUserInformRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    LoginRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserToken'
+    GetCategoriesRequest:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category'

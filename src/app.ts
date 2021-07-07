@@ -19,7 +19,13 @@ const app = express();
 const server = http.createServer(app);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.use('/hello', (req, res) => {
+  return res.json({ text: 'hello' });
+});
+app.use('/users/login/google', (req, res) => {
+  console.log(req.headers);
+  return res.json({ message: 'ok' });
+});
 connect();
 
 server.listen(port, () => {

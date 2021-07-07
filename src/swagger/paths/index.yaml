@@ -1,8 +1,380 @@
 /hello:
   get:
+    tags:
+      - hello
     summary: Returns Hello Text
+    security:
+      - bearerAuth: []
     responses:
       200:
         $ref: '../components/index.yaml#/components/responses/HelloRequest'
       400:
         $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+
+/accountbooks/users/{userId}/years/{yyyy}/months/{mm}:
+  get:
+    tags:
+      - accountbook
+    summary: 달력에 필요한 가계부 불러오기
+    description: userId가 yyyy-mm 기준으로 바로 이전 달과 바로 이후에 달을 포함하여 총 세 달에 기간동안 작성한 가게부를 불러온다
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/GetAccountbooksRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+    parameters:
+      - in: path
+        name: userId
+        description: 유저의 고유 아이디
+        required: true
+      - in: path
+        name: yyyy
+        description: 원하는 년도
+        required: true
+      - in: path
+        name: mm
+        description: 원하는 달
+        required: true
+
+/ledgers/users/{userId}/years/{yyyy}/months/{mm}/days/{dd}:
+  get:
+    tags:
+      - ledger
+    summary: 원하는 장부 불러오기
+    description: userId가 클릭한 yyyy-mm-dd에 장부 내용을 불러온다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 유저의 고유 아이디
+      - in: path
+        name: yyyy
+        description: 원하는 년도
+        required: true
+      - in: path
+        name: mm
+        description: 원하는 달
+        required: true
+      - in: path
+        name: dd
+        description: 원하는 일
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/GetLedgersRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/ledgers:
+  post:
+    tags:
+      - ledger
+    summary: 새로운 장부 작성
+    description: 새로운 장부를 작성한다.
+    security:
+      - bearerAuth: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../components/index.yaml#/components/schemas/Ledger'
+      description: 새로운 장부
+      required: true
+
+    responses:
+      201:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/ledgers/{ledgerId}/users/{userId}/years/{yyyy}/months/{mm}/days/{dd}:
+  put:
+    tags:
+      - ledger
+    summary: 기존 장부 수정
+    description: userId가 작성한 기존에 존재했던 장부의 내용을 수정한다. patch는 몇몇 웹 서버나 브라우저에서 지원 안하므로 put을 사용
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 글 쓴 사람
+        required: true
+      - in: path
+        name: ledgerId
+        description: 수정하고 싶은 장부의 아이디
+        required: true
+      - in: path
+        name: yyyy
+        description: 원하는 년도
+        required: true
+      - in: path
+        name: mm
+        description: 원하는 달
+        required: true
+      - in: path
+        name: dd
+        description: 원하는 일
+        required: true
+      - in: path
+        name: ledgerId
+        description: 교체하려는 장부의 아이디
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+  delete:
+    tags:
+      - ledger
+    summary: 기존 장부 삭제
+    description: userId가 yyyy-mm-dd에 쓴 장부 중 장부 아이디가 ledgerId인 장부를 삭제한다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 글 쓴 사람
+        required: true
+      - in: path
+        name: ledgerId
+        description: 수정하고 싶은 장부의 아이디
+        required: true
+      - in: path
+        name: yyyy
+        description: 원하는 년도
+        required: true
+      - in: path
+        name: mm
+        description: 원하는 달
+        required: true
+      - in: path
+        name: dd
+        description: 원하는 일
+        required: true
+      - in: path
+        name: ledgerId
+        description: 교체하려는 장부의 아이디
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+/users/login/google:
+  get:
+    tags:
+      - user
+    summary: 구글 로그인
+    description: 구글 로그인 했던 기록이 있으면 로그인을 하고 로그인을 한 기억이 없다면 새로운 정보를 만들어준다.
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/LoginRequest'
+      201:
+        $ref: '../components/index.yaml#/components/responses/LoginRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/users/login/github:
+  get:
+    tags:
+      - user
+    summary: 깃허브 로그인
+    description: 깃허브 로그인 했던 기록이 있으면 로그인을 하고 로그인을 한 기억이 없다면 새로운 정보를 만들어준다.
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/LoginRequest'
+      201:
+        $ref: '../components/index.yaml#/components/responses/LoginRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/users/{userId}/profile:
+  get:
+    tags:
+      - user
+    summary: 유저 정보 부르기
+    description: 마이페이지나 최상단 바에서 유저 사진 아이콘을 클릭하면 유저 닉네임과 유저 프로필을 불러온다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 유저 아이디
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/GetUserInformRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+  put:
+    tags:
+      - user
+    summary: 유저 정보 고치기
+    description: 마이 페이지나 최상단 바에 아이콘을 눌러서 유저 닉네임이나 프로필 변경을 위해 사용한다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 유저 아이디
+        required: true
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              nickname:
+                type: string
+              image:
+                type: string
+                format: binary
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/categories/users/{userId}:
+  get:
+    tags:
+      - category
+    summary: 카테고리 불러오기
+    description: 유저가 등록한 카테고리들 불러오기
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        description: 유저 아이디
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/GetCategoriesRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/categories:
+  post:
+    tags:
+      - category
+    summary: 카테고리 생성
+    description: 새로운 카테고리를 생성한다.
+    security:
+      - bearerAuth: []
+    requestBody:
+      description: 생성할 내용
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/index.yaml#/components/schemas/CreateCategoryInform'
+    responses:
+      201:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/categories/{categoryId}:
+  put:
+    tags:
+      - category
+    summary: 카테고리 수정
+    description: 내가 원하는 카테고리 항목을 수정한다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: categoryId
+        description: 내가 원하는 카테고리 아이디
+        required: true
+    requestBody:
+      description: 바꿀 내용
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/index.yaml#/components/schemas/CreateCategoryInform'
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'
+
+/categories/{categoryId}/users/{userId}:
+  delete:
+    tags:
+      - category
+    summary: 카테고리 삭제
+    description: 내가 원하는 카테고리 항목을 삭제한다.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: categoryId
+        description: 내가 원하는 카테고리 아이디
+        required: true
+      - in: path
+        name: userId
+        description: 접속한 유저
+        required: true
+    responses:
+      200:
+        $ref: '../components/index.yaml#/components/responses/OkRequest'
+      400:
+        $ref: '../components/index.yaml#/components/responses/BadRequest'
+      401:
+        $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
+      500:
+        $ref: '../components/index.yaml#/components/responses/InternalServerError'

@@ -1,5 +1,5 @@
-import { Document, Model } from "mongoose";
-import { ILedger } from "./Ledger.type";
+import { Document, Model } from 'mongoose';
+import { ILedger } from './Ledger.types';
 export interface IAccountBook {
   yyyymm: string;
   yyyymmValue: {

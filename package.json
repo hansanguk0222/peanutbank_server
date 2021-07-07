@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/ts-node ./src/app.ts",
     "api-docs": "swagger-cli bundle ./src/swagger/openapi.yaml --outfile build/swagger.yaml --type yaml",
-    "predev": "npm run api-docs"
+    "predev": "npm run api-docs",
+    "mockingDatabase": "cross-env NODE_ENV=development ts-node ./src/utils/dummyDatas/Category.dummyDatas.ts"
   },
   "repository": {
     "type": "git",

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { LedgerSchema } from './Ledger.schema';
+import { LedgerSchema } from './Ledger.schemas';
 
 export const AccountbookSchema = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
+  _id: mongoose.Schema.Types.ObjectId,
   yyyymm: { type: String, required: true, unique: true },
   yyyymmValue: {
     expenditure: {

@@ -1,10 +1,6 @@
-import { IUserDocument, IUserModel } from "@/src/type";
+import { IUserDocument, IUserModel } from '@/src/types';
 
-export async function findByUserIdOrCreateUser(
-  this: IUserModel,
-  userId: string,
-  OAuthType: string
-): Promise<IUserDocument> {
+export async function findByUserIdOrCreateUser(this: IUserModel, userId: string, OAuthType: string): Promise<IUserDocument> {
   const user = await this.findOne({ userId, OAuthType });
   if (user) {
     return user;

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import { AccountbookModel, CategoryModel, LedgerModel, UserModel } from '@/src/models';
 export const connect = () => {
   console.log(process.env.MONGO_URL);
   const uri = `${process.env.MONGO_URL}`;
@@ -17,6 +17,12 @@ export const connect = () => {
     .catch((err) => {
       console.log(err);
     });
+  return {
+    AccountbookModel,
+    CategoryModel,
+    LedgerModel,
+    UserModel,
+  };
 };
 
 export const disconnect = () => {

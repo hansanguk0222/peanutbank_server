@@ -8,7 +8,7 @@ export interface IUser {
   nickname: string;
   image: string;
   accountBook: [IAccountBook];
-  categoris: [ICategory];
+  categories: [ICategory];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,4 +19,5 @@ export interface IUserDocument extends IUser, Document {
 
 export interface IUserModel extends Model<IUserDocument> {
   findByUserIdOrCreateUser: (this: IUserModel, userId: string, OAuthType: string) => Promise<IUserDocument>;
+  findCategoriesByUserId: (this: IUserModel, userId: string, OAuthType: string) => Promise<[ICategory]>;
 }

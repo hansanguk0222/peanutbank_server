@@ -1,5 +1,10 @@
 import 'module-alias/register';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import createError from 'http-errors';
+import cors from 'cors';
+import passport from 'passport';
 import dotenv from 'dotenv';
 import path from 'path';
 import { connect, disconnect } from '@/src/db';
@@ -18,15 +23,26 @@ const swaggerSpec = YAML.load(path.join(__dirname, '../build/swagger.yaml'));
 const app = express();
 const server = http.createServer(app);
 
+app.set('port', port);
+app.use(cors());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+
+connect();
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use('/hello', (req, res) => {
   return res.json({ text: 'hello' });
 });
-app.use('/users/login/google', (req, res) => {
-  console.log(req.headers);
-  return res.json({ message: 'ok' });
+
+app.use((req, res, next) => {
+  next(createError(404));
 });
-connect();
 
 server.listen(port, () => {
   console.log(`${port}에서 열림`);

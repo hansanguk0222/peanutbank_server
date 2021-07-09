@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 import { AccountbookSchema } from './Accountbook.schemas';
 import { CategorySchema } from './Category.schemas';
-import { findByUserIdOrCreateUser } from '@/src/statics';
+import { findByUserIdOrCreateUser, findCategoriesByUserId } from '@/src/statics';
 import { updateImage } from '@/src/methods';
 
 const UserSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   userId: { type: String, required: true, unique: true },
   OAuthType: { type: String, required: true },
   nickname: String,
@@ -23,6 +22,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.statics.findByUserIdOrCreateUser = findByUserIdOrCreateUser;
+UserSchema.statics.findCategoriesByUserId = findCategoriesByUserId;
 
 UserSchema.methods.updateImage = updateImage;
 

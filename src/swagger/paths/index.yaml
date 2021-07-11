@@ -13,12 +13,12 @@
       401:
         $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
 
-/accountbooks/users/{userId}/years/{yyyy}/months/{mm}:
+/accountbooks/users/{nickname}/years/{yyyy}/months/{mm}:
   get:
     tags:
       - accountbook
     summary: 달력에 필요한 가계부 불러오기
-    description: userId가 yyyy-mm 기준으로 바로 이전 달과 바로 이후에 달을 포함하여 총 세 달에 기간동안 작성한 가게부를 불러온다
+    description: nickname가 yyyy-mm 기준으로 바로 이전 달과 바로 이후에 달을 포함하여 총 세 달에 기간동안 작성한 가게부를 불러온다
     security:
       - bearerAuth: []
     responses:
@@ -32,8 +32,8 @@
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
     parameters:
       - in: path
-        name: userId
-        description: 유저의 고유 아이디
+        name: nickname
+        description: 유저의 고유 닉네임
         required: true
       - in: path
         name: yyyy
@@ -44,18 +44,18 @@
         description: 원하는 달
         required: true
 
-/ledgers/users/{userId}/years/{yyyy}/months/{mm}/days/{dd}:
+/ledgers/users/{nickname}/years/{yyyy}/months/{mm}/days/{dd}:
   get:
     tags:
       - ledger
     summary: 원하는 장부 불러오기
-    description: userId가 클릭한 yyyy-mm-dd에 장부 내용을 불러온다.
+    description: nickname가 클릭한 yyyy-mm-dd에 장부 내용을 불러온다.
     security:
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
-        description: 유저의 고유 아이디
+        name: nickname
+        description: 유저의 고유 닉네임
       - in: path
         name: yyyy
         description: 원하는 년도
@@ -90,7 +90,7 @@
       content:
         application/json:
           schema:
-            $ref: '../components/index.yaml#/components/schemas/Ledger'
+            $ref: '../components/index.yaml#/components/schemas/CreateLedger'
       description: 새로운 장부
       required: true
 
@@ -104,17 +104,17 @@
       500:
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
 
-/ledgers/{ledgerId}/users/{userId}/years/{yyyy}/months/{mm}/days/{dd}:
+/ledgers/{ledgerId}/users/{nickname}/years/{yyyy}/months/{mm}/days/{dd}:
   put:
     tags:
       - ledger
     summary: 기존 장부 수정
-    description: userId가 작성한 기존에 존재했던 장부의 내용을 수정한다. patch는 몇몇 웹 서버나 브라우저에서 지원 안하므로 put을 사용
+    description: nickname가 작성한 기존에 존재했던 장부의 내용을 수정한다. patch는 몇몇 웹 서버나 브라우저에서 지원 안하므로 put을 사용
     security:
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
+        name: nickname
         description: 글 쓴 사람
         required: true
       - in: path
@@ -150,12 +150,12 @@
     tags:
       - ledger
     summary: 기존 장부 삭제
-    description: userId가 yyyy-mm-dd에 쓴 장부 중 장부 아이디가 ledgerId인 장부를 삭제한다.
+    description: nickname가 yyyy-mm-dd에 쓴 장부 중 장부 아이디가 ledgerId인 장부를 삭제한다.
     security:
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
+        name: nickname
         description: 글 쓴 사람
         required: true
       - in: path
@@ -219,7 +219,7 @@
       500:
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
 
-/users/{userId}/profile:
+/users/{nickname}/profile:
   get:
     tags:
       - user
@@ -229,8 +229,8 @@
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
-        description: 유저 아이디
+        name: nickname
+        description: 유저 닉네임
         required: true
     responses:
       200:
@@ -250,8 +250,8 @@
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
-        description: 유저 아이디
+        name: nickname
+        description: 유저 닉네임
         required: true
     requestBody:
       content:
@@ -274,7 +274,7 @@
       500:
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
 
-/categories/users/{userId}:
+/categories/users/{nickname}:
   get:
     tags:
       - category
@@ -284,8 +284,8 @@
       - bearerAuth: []
     parameters:
       - in: path
-        name: userId
-        description: 유저 아이디
+        name: nickname
+        description: 유저 닉네임
         required: true
     responses:
       200:
@@ -322,7 +322,7 @@
       500:
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
 
-/categories/{categoryId}:
+/categories/{categoryId}/users/{nickname}:
   put:
     tags:
       - category
@@ -335,13 +335,17 @@
         name: categoryId
         description: 내가 원하는 카테고리 아이디
         required: true
+      - in: path
+        name: nickname
+        description: 유저 닉네임
+        required: true
     requestBody:
       description: 바꿀 내용
       required: true
       content:
         application/json:
           schema:
-            $ref: '../components/index.yaml#/components/schemas/CreateCategoryInform'
+            $ref: '../components/index.yaml#/components/schemas/UpdateCategoryColorInform'
     responses:
       200:
         $ref: '../components/index.yaml#/components/responses/OkRequest'
@@ -351,8 +355,6 @@
         $ref: '../components/index.yaml#/components/responses/UnauthorizedError'
       500:
         $ref: '../components/index.yaml#/components/responses/InternalServerError'
-
-/categories/{categoryId}/users/{userId}:
   delete:
     tags:
       - category
@@ -366,7 +368,7 @@
         description: 내가 원하는 카테고리 아이디
         required: true
       - in: path
-        name: userId
+        name: nickname
         description: 접속한 유저
         required: true
     responses:

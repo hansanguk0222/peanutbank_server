@@ -3,40 +3,23 @@ components:
     Accountbook:
       type: object
       description: 가계부
-      properties:
-        id:
-          type: string
-        yyyymm:
-          type: string
-        yyyymmValue:
-          type: object
-          properties:
-            expenditure:
-              type: object
-              properties:
-                dd:
-                  type: string
-                ddValue:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Ledger'
-            income:
-              type: object
-              properties:
-                dd:
-                  type: string
-                ddValue:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Ledger'
-        allExpenditure:
-          type: number
-        allIncome:
-          type: number
-        maxExpenditure:
-          type: number
-        maxIncome:
-          type: number
+      additionalProperties:
+        type: object
+        properties:
+          expenditure:
+            type: object
+            properties:
+              additionalProperites:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ledger'
+          income:
+            type: object
+            properties:
+              additionalProperites:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ledger'
 
     Ledger:
       type: object
@@ -62,7 +45,7 @@ components:
         id:
           type: string
           required: false
-        userId:
+        nickname:
           type: string
           required: true
         yyyy:
@@ -131,12 +114,6 @@ components:
         nickname:
           type: string
 
-    LoginInform:
-      type: object
-      properties:
-        userId:
-          type: string
-
     UserToken:
       type: object
       properties:
@@ -156,13 +133,21 @@ components:
           type: string
         color:
           type: string
+        isExist:
+          type: boolean
 
     CreateCategoryInform:
       type: object
       properties:
-        userId:
+        nickname:
           type: string
         name:
+          type: string
+
+    UpdateCategoryColorInform:
+      type: object
+      properties:
+        color:
           type: string
 
   prameters: null

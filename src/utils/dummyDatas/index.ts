@@ -3,6 +3,7 @@ import { connect, disconnect } from '@/src/db';
 import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
+import { CategoryModel } from '@/src/models';
 
 dotenv.config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV == 'production' ? '.env' : '.env.dev'),
@@ -95,11 +96,9 @@ dotenv.config({
   // ];
 
   try {
-    // for (const user of users) {
-    //   await UserModel.create(user);
-    // }
-    const categories = await db.UserModel.findCategoriesByUserId('github01234545', 'github');
-    console.log(categories);
+    const user = await db.UserModel.findUserByNickname({ nickname: 'peanut2016' });
+    await user.updateCategoryColor({ categoryId: '60e7c58508421695ec7d9371', color: '#234' });
+    disconnect();
   } catch (e) {
     console.error(e);
   }

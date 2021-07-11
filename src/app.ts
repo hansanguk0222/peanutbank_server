@@ -11,6 +11,7 @@ import { connect, disconnect } from '@/src/db';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import http from 'http';
+import apiRouter from '@/src/routes';
 
 dotenv.config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV == 'production' ? '.env' : '.env.dev'),
@@ -32,13 +33,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-connect();
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/hello', (req, res) => {
   return res.json({ text: 'hello' });
 });
+
+app.use('/', apiRouter);
 
 app.use((req, res, next) => {
   next(createError(404));

@@ -47,16 +47,16 @@ components:
           required: false
         nickname:
           type: string
-          required: true
+          required: false
         yyyy:
           type: number
-          required: true
+          required: false
         mm:
           type: number
-          required: true
+          required: false
         dd:
           type: number
-          required: true
+          required: false
         incomeOrExpenditure:
           type: string
           required: true
@@ -72,6 +72,12 @@ components:
         categoryId:
           type: string
           required: false
+
+    CreateSuccess:
+      type: object
+      properties:
+        id:
+          type: string
 
     Accountbooks:
       type: object
@@ -190,6 +196,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateLedger'
+    CreateSuccessRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateSuccess'
     BadRequest:
       content:
         application/json:

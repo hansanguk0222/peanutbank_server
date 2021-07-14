@@ -93,10 +93,9 @@
             $ref: '../components/index.yaml#/components/schemas/CreateLedger'
       description: 새로운 장부
       required: true
-
     responses:
       201:
-        $ref: '../components/index.yaml#/components/responses/OkRequest'
+        $ref: '../components/index.yaml#/components/responses/CreateSuccessRequest'
       400:
         $ref: '../components/index.yaml#/components/responses/BadRequest'
       401:
@@ -137,6 +136,14 @@
         name: ledgerId
         description: 교체하려는 장부의 아이디
         required: true
+    requestBody:
+      description: 생성할 내용
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/index.yaml#/components/schemas/CreateCategoryInform'
+
     responses:
       200:
         $ref: '../components/index.yaml#/components/responses/OkRequest'

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export const LedgerSchema = new mongoose.Schema({
-  discription: String,
+  description: String,
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'categorySchema' },
   amount: Number,
 });

@@ -1,5 +1,7 @@
 import { STRINGARRAY } from '../constants';
 import { IAccountBook, ILedger } from '@/src/types';
+import mongoose from 'mongoose';
+
 export const verifyRequestData = (arr: any[]): boolean =>
   arr.every((e) => {
     return e !== undefined && e !== null;
@@ -39,12 +41,10 @@ export const getThreeYYYYMM = ({ yyyy, mm }: { yyyy: number; mm: number }) => {
 export const changeDailyLedgersForm = ({
   ledgers,
 }: {
-  ledgers: [
-    {
-      dd: string;
-      ddValue: [ILedger];
-    }
-  ];
+  ledgers: {
+    dd: string;
+    ddValue: ILedger[];
+  }[];
 }) => {
   const newForm = {};
   ledgers.map((ledger) => {
@@ -68,4 +68,11 @@ export const changeAccountbookForm = ({ accountbook }: { accountbook: IAccountBo
       maxIncome,
     },
   };
+};
+
+export const getNewMaxAmount = ({ ddValue }: { ddValue: { _id?: mongoose.Types.ObjectId; amount: number; description: string; categoryId: string }[] }): number => {
+  const newMaxAmount = ddValue.reduce((acc: number, cur: { _id?: mongoose.Types.ObjectId; amount: number; description: string; categoryId: string }) => {
+    return acc + cur.amount;
+  }, 0);
+  return newMaxAmount;
 };

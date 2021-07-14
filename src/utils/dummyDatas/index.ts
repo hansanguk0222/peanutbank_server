@@ -97,7 +97,16 @@ dotenv.config({
 
   try {
     const user = await db.UserModel.findUserByNickname({ nickname: 'peanut2016' });
-    await user.updateCategoryColor({ categoryId: '60e7c58508421695ec7d9371', color: '#234' });
+    await user.updateLedger({
+      ledgerId: '60ebf34abec8dbc686f8b9eb',
+      amount: 120000,
+      categoryId: '60e682f3a307e8a5cb221528',
+      dd: '15',
+      description: '횟집',
+      incomeOrExpenditure: 'expenditure',
+      mm: '02',
+      yyyy: '2020',
+    });
     disconnect();
   } catch (e) {
     console.error(e);

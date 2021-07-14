@@ -3,18 +3,14 @@ import { ILedger } from './Ledger.types';
 export interface IAccountBook {
   yyyymm: string;
   yyyymmValue: {
-    expenditure: [
-      {
-        dd: string;
-        ddValue: [ILedger];
-      }
-    ];
-    income: [
-      {
-        dd: string;
-        ddValue: [ILedger];
-      }
-    ];
+    expenditure: {
+      dd: string;
+      ddValue: ILedger[];
+    }[];
+    income: {
+      dd: string;
+      ddValue: ILedger[];
+    }[];
     allExpenditure: number;
     allIncome: number;
     maxExpenditure: number;

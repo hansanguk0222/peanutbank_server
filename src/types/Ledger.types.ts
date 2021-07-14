@@ -1,9 +1,9 @@
-import { Document, Model, ObjectId } from "mongoose";
+import { Document, Model, ObjectId } from 'mongoose';
 
-export interface ILedger {
-  discription: string;
-  categoryId: ObjectId;
-  account: number;
+export interface ILedger extends Document {
+  description: string;
+  categoryId: string;
+  amount: number;
 }
 
 export interface ILedgerDocument extends ILedger, Document {}

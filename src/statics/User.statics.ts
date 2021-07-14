@@ -20,15 +20,9 @@ export async function findUserByNickname(this: IUserModel, { nickname }: { nickn
   return user;
 }
 
-export async function findCategoriesByNickname(this: IUserModel, nickname: string): Promise<[ICategory]> {
+export async function findCategoriesByNickname(this: IUserModel, nickname: string): Promise<ICategory[]> {
   const categories = await this.findOne({ nickname }).then((user) => user.categories);
   return categories;
-}
-
-export async function createCategory(this: IUserModel, { nickname, name, color }: { nickname: string; name: string; color: string }): Promise<mongoose.Types.ObjectId> {
-  const _id = mongoose.Types.ObjectId();
-  await this.updateOne({ nickname }, { $push: { categories: { _id, name, color, isExist: true } } });
-  return _id;
 }
 
 export async function findCategoryByNicknameAndCategoryId(this: IUserModel, nickname: string, categoryId: string): Promise<IUserDocument> {
@@ -60,26 +54,4 @@ export async function findAccoutbookByNickname(this: IUserModel, { nickname }: {
     },
   ])) as [IUserDocument];
   return user;
-}
-
-export async function createLedger(
-  this: IUserModel,
-  {
-    nickname,
-    yyyy,
-    mm,
-    dd,
-    incomeOrExpenditure,
-    description,
-    amount,
-    categoryId,
-  }: { nickname: string; yyyy: string; mm: string; dd: string; incomeOrExpenditure: string; description: string; amount: number; categoryId: string }
-): Promise<mongoose.Types.ObjectId> {
-  const _id = mongoose.Types.ObjectId();
-  const whichTypeDD = incomeOrExpenditure === 'income' ? 'accountbooks.income.dd' : 'accountbooks.expenditure.dd';
-  const accountbook = await this.findOneAndUpdate({ nickname, yyyymm: `${yyyy}-${mm}` }, { yyyymm: { expenditure: {}, income: {}, allIncome: 0, maxIncome: 0, allExpenditure: 0, maxExpenditure: 0 } });
-  await this.findOneAndUpdate({ nickname, yyyymm: `${yyyy}-${mm}`, [whichTypeDD]: dd }, { dd, ddValue: [] });
-  await this.updateOne({ nickname, yyyymm: `${yyyy}-${mm}`, [whichTypeDD]: dd }, { $push: { ddValue: { _id, description, amount, categoryId, isExist: true } } });
-  //최대최소 수입지출, 총 수입지출 변경하는 코드 들어가야 함, aggregate를 써보자
-  return _id;
 }

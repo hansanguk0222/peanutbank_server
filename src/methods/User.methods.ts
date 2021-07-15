@@ -1,6 +1,6 @@
-import { IAccountBook, ICategory, IUserDocument } from '@/src/types';
+import { IAccountBook, ICategory, IUserDocument, ILedgerDocument } from '@/src/types';
 import mongoose, { Document } from 'mongoose';
-import { getNewMaxAmount } from '@/src/utils/utilFunc';
+import { getNewMaxAmount, getThreeYYYYMM } from '@/src/utils/utilFunc';
 export async function updateImage(this: IUserDocument, userId: string, image: string): Promise<string> {
   const filter = { userId };
   const updatedDoc = {
@@ -42,8 +42,20 @@ export async function deleteCategory(this: IUserDocument, { categoryId }: { cate
 }
 
 export async function findAccountbookByYYYYMM(this: IUserDocument, { yyyy, mm }: { yyyy: string; mm: string }): Promise<IAccountBook> {
-  const [thisMonthAccountbook] = this.accountbooks.filter((item) => item.yyyymm === `${yyyy}-${mm}`);
-  return thisMonthAccountbook;
+  const [accountbook] = this.accountbooks.filter((item) => item.yyyymm === `${yyyy}-${mm}`);
+  return accountbook;
+}
+
+export async function findLedgersByYYYYMMDD(this: IUserDocument, { yyyy, mm, dd }: { nickname: string; yyyy: string; mm: string; dd: string }): Promise<ILedgerDocument[]> {
+  const [accountbook] = this.accountbooks.filter((item) => item.yyyymm === `${yyyy}-${mm}`);
+  if (accountbook) {
+    const [expenditure] = accountbook.yyyymmValue.expenditure.filter((ledger) => ledger.dd === dd);
+    const [income] = accountbook.yyyymmValue.income.filter((ledger) => ledger.dd === dd);
+    const expenditureDDValue = expenditure && expenditure.ddValue ? expenditure.ddValue : [];
+    const incomeDDValue = income && income.ddValue ? income.ddValue : [];
+    return [...expenditureDDValue, ...incomeDDValue];
+  }
+  return [];
 }
 
 export async function createLedger(

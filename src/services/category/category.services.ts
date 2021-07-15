@@ -1,8 +1,8 @@
 import { connect, disconnect } from '@/src/db';
-import { ICategory } from '@/src/types';
+import { ICategory, ICategoryDocument } from '@/src/types';
 import mongoose from 'mongoose';
 
-export const getCategoriesService = async ({ nickname }: { nickname: string }): Promise<ICategory[]> => {
+export const getCategoriesService = async ({ nickname }: { nickname: string }): Promise<ICategoryDocument[]> => {
   const db = connect();
   const categories = await db.UserModel.findCategoriesByNickname(nickname);
   disconnect();

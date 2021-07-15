@@ -1,5 +1,6 @@
 import { ICategoryDocument, ICategory, IUserDocument, IUserModel } from '@/src/types';
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { CategoryModel } from '../models';
 
 export async function findByUserIdOrCreateUser(this: IUserModel, userId: string, OAuthType: string): Promise<IUserDocument> {
   const user = await this.findOne({ userId });
@@ -20,9 +21,11 @@ export async function findUserByNickname(this: IUserModel, { nickname }: { nickn
   return user;
 }
 
-export async function findCategoriesByNickname(this: IUserModel, nickname: string): Promise<ICategory[]> {
+export async function findCategoriesByNickname(this: IUserModel, nickname: string): Promise<ICategoryDocument[]> {
   const categories = await this.findOne({ nickname }).then((user) => user.categories);
-  return categories;
+  const categoriesDocument: ICategoryDocument[] = [];
+  categories.map((category) => categoriesDocument.push(new CategoryModel(category)));
+  return categoriesDocument;
 }
 
 export async function findCategoryByNicknameAndCategoryId(this: IUserModel, nickname: string, categoryId: string): Promise<IUserDocument> {

@@ -150,6 +150,18 @@ components:
         name:
           type: string
 
+    UpdateLedgerInform:
+      type: object
+      properties:
+        category:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        incomeOrExpenditure:
+          type: string
+
     UpdateCategoryColorInform:
       type: object
       properties:

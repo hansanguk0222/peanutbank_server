@@ -132,17 +132,13 @@
         name: dd
         description: 원하는 일
         required: true
-      - in: path
-        name: ledgerId
-        description: 교체하려는 장부의 아이디
-        required: true
     requestBody:
       description: 생성할 내용
       required: true
       content:
         application/json:
           schema:
-            $ref: '../components/index.yaml#/components/schemas/CreateCategoryInform'
+            $ref: '../components/index.yaml#/components/schemas/UpdateLedgerInform'
 
     responses:
       200:
@@ -180,10 +176,6 @@
       - in: path
         name: dd
         description: 원하는 일
-        required: true
-      - in: path
-        name: ledgerId
-        description: 교체하려는 장부의 아이디
         required: true
     responses:
       200:

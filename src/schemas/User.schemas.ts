@@ -2,7 +2,18 @@ import mongoose from 'mongoose';
 import { AccountbookSchema } from './Accountbook.schemas';
 import { CategorySchema } from './Category.schemas';
 import { findByUserIdOrCreateUser, findCategoriesByNickname, findUserByNickname, findCategoryByNicknameAndCategoryId, findAccoutbookByNickname } from '@/src/statics';
-import { updateImage, updateNickname, updateCategoryColor, deleteCategory, findAccountbookByYYYYMM, createLedger, updateLedger, createCategory, findLedgersByYYYYMMDD } from '@/src/methods';
+import {
+  updateImage,
+  updateNickname,
+  updateCategoryColor,
+  deleteCategory,
+  findAccountbookByYYYYMM,
+  createLedger,
+  updateLedger,
+  createCategory,
+  findLedgersByYYYYMMDD,
+  deleteLedger,
+} from '@/src/methods';
 
 const UserSchema = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
@@ -36,5 +47,6 @@ UserSchema.methods.createLedger = createLedger;
 UserSchema.methods.updateLedger = updateLedger;
 UserSchema.methods.createCategory = createCategory;
 UserSchema.methods.findLedgersByYYYYMMDD = findLedgersByYYYYMMDD;
+UserSchema.methods.deleteLedger = deleteLedger;
 
 export { UserSchema };

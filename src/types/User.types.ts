@@ -48,6 +48,7 @@ export interface IUserDocument extends IUser, Document {
   ): Promise<mongoose.Types.ObjectId>;
   createCategory: (this: IUserDocument, { name, color }: { name: string; color: string }) => Promise<mongoose.Types.ObjectId>;
   findLedgersByYYYYMMDD: (this: IUserDocument, { yyyy, mm, dd }: { yyyy: string; mm: string; dd: string }) => Promise<ILedgerDocument[]>;
+  deleteLedger: (this: IUserDocument, { ledgerId, yyyy, mm, dd }: { ledgerId: string; yyyy: string; mm: string; dd: string }) => Promise<void>;
 }
 
 export interface IUserModel extends Model<IUserDocument> {

@@ -4,6 +4,7 @@ export interface ILedger extends Document {
   description: string;
   categoryId: string;
   amount: number;
+  isExist: boolean;
 }
 
 export interface ILedgerDocument extends ILedger, Document {}

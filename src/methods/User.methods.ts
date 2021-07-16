@@ -51,8 +51,8 @@ export async function findLedgersByYYYYMMDD(this: IUserDocument, { yyyy, mm, dd 
   if (accountbook) {
     const [expenditure] = accountbook.yyyymmValue.expenditure.filter((ledger) => ledger.dd === dd);
     const [income] = accountbook.yyyymmValue.income.filter((ledger) => ledger.dd === dd);
-    const expenditureDDValue = expenditure && expenditure.ddValue ? expenditure.ddValue : [];
-    const incomeDDValue = income && income.ddValue ? income.ddValue : [];
+    const expenditureDDValue = expenditure && expenditure.ddValue && expenditure.ddValue.length !== 0 ? expenditure.ddValue.filter((expenditureItem) => expenditureItem.isExist) : [];
+    const incomeDDValue = income && income.ddValue && income.ddValue.length !== 0 ? income.ddValue.filter((incomeItem) => incomeItem.isExist === true) : [];
     return [...expenditureDDValue, ...incomeDDValue];
   }
   return [];
@@ -69,17 +69,17 @@ export async function createLedger(
       isExistAccountbook = true;
       let isExistDDItem = false;
       accountbook.yyyymmValue[incomeOrExpenditure].map(
-        (incomeOrExpenditureItem: { dd: string; ddValue: { _id: mongoose.Types.ObjectId; amount: number; description: string; categoryId: string }[] }) => {
+        (incomeOrExpenditureItem: { dd: string; ddValue: { _id: mongoose.Types.ObjectId; amount: number; description: string; categoryId: string; isExist: boolean }[] }) => {
           if (incomeOrExpenditureItem.dd == dd) {
             isExistDDItem = true;
-            incomeOrExpenditureItem.ddValue.push({ _id, amount, description, categoryId });
+            incomeOrExpenditureItem.ddValue.push({ _id, amount, description, categoryId, isExist: true });
           }
         }
       );
       if (!isExistDDItem) {
         accountbook.yyyymmValue[incomeOrExpenditure].push({
           dd,
-          ddValue: [{ _id, amount, description, categoryId }],
+          ddValue: [{ _id, amount, description, categoryId, isExist: true }],
         });
       }
       if (incomeOrExpenditure === 'income') {
@@ -107,7 +107,7 @@ export async function createLedger(
         maxIncome: 0,
       },
     };
-    accountbook.yyyymmValue[incomeOrExpenditure].push({ dd, ddValue: [{ _id, amount, description, categoryId }] });
+    accountbook.yyyymmValue[incomeOrExpenditure].push({ dd, ddValue: [{ _id, amount, description, categoryId, isExist: true }] });
     if (incomeOrExpenditure === 'income') {
       accountbook.yyyymmValue.allIncome = amount;
       accountbook.yyyymmValue.maxIncome = amount;
@@ -183,4 +183,21 @@ export async function createCategory(this: IUserDocument, { name, color }: { nam
     return _id;
   }
   return isExistCategory._id;
+}
+
+export async function deleteLedger(this: IUserDocument, { ledgerId, yyyy, mm, dd }: { ledgerId: string; yyyy: string; mm: string; dd: string }): Promise<void> {
+  this.accountbooks.map((accountbook) => {
+    if (accountbook.yyyymm === `${yyyy}-${mm}`) {
+      accountbook.yyyymmValue.expenditure.map((ledgers) => {
+        if (ledgers.dd === dd) {
+          ledgers.ddValue.map((ledger) => {
+            if (ledger._id.toHexString() === ledgerId) {
+              ledger.isExist = false;
+            }
+          });
+        }
+      });
+    }
+  });
+  await this.save();
 }

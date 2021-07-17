@@ -1,6 +1,6 @@
-import { Document, Model } from 'mongoose';
+import { Document, Model, Mongoose, Types } from 'mongoose';
 
-export interface ICategory {
+export interface ICategory extends Document {
   name: string;
   color: string;
   isExist: boolean;

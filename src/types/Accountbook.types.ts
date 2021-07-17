@@ -5,12 +5,12 @@ export interface IAccountBook {
   yyyymmValue: {
     expenditure: {
       dd: string;
-      ddValue: [ILedger];
-    };
+      ddValue: ILedger[];
+    }[];
     income: {
       dd: string;
-      ddValue: [ILedger];
-    };
+      ddValue: ILedger[];
+    }[];
     allExpenditure: number;
     allIncome: number;
     maxExpenditure: number;

@@ -1,14 +1,24 @@
 import mongoose from 'mongoose';
 import { AccountbookSchema } from './Accountbook.schemas';
 import { CategorySchema } from './Category.schemas';
-import { findByUserIdOrCreateUser } from '@/src/statics';
-import { updateImage } from '@/src/methods';
+import { findByUserIdOrCreateUser, findCategoriesByNickname, findUserByNickname, findCategoryByNicknameAndCategoryId, findAccoutbookByNickname } from '@/src/statics';
+import {
+  updateImage,
+  updateNickname,
+  updateCategoryColor,
+  deleteCategory,
+  findAccountbookByYYYYMM,
+  createLedger,
+  updateLedger,
+  createCategory,
+  findLedgersByYYYYMMDD,
+  deleteLedger,
+} from '@/src/methods';
 
 const UserSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   userId: { type: String, required: true, unique: true },
   OAuthType: { type: String, required: true },
-  nickname: String,
+  nickname: { type: String, unique: true },
   image: String,
   accountbooks: [AccountbookSchema],
   categories: [CategorySchema],
@@ -23,7 +33,20 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.statics.findByUserIdOrCreateUser = findByUserIdOrCreateUser;
+UserSchema.statics.findUserByNickname = findUserByNickname;
+UserSchema.statics.findCategoriesByNickname = findCategoriesByNickname;
+UserSchema.statics.findCategoryByNicknameAndCategoryId = findCategoryByNicknameAndCategoryId;
+UserSchema.statics.findAccountbookNickname = findAccoutbookByNickname;
 
 UserSchema.methods.updateImage = updateImage;
+UserSchema.methods.updateNickname = updateNickname;
+UserSchema.methods.updateCategoryColor = updateCategoryColor;
+UserSchema.methods.deleteCategory = deleteCategory;
+UserSchema.methods.findAccountbookByYYYYMM = findAccountbookByYYYYMM;
+UserSchema.methods.createLedger = createLedger;
+UserSchema.methods.updateLedger = updateLedger;
+UserSchema.methods.createCategory = createCategory;
+UserSchema.methods.findLedgersByYYYYMMDD = findLedgersByYYYYMMDD;
+UserSchema.methods.deleteLedger = deleteLedger;
 
 export { UserSchema };

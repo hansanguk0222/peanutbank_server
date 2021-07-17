@@ -3,40 +3,23 @@ components:
     Accountbook:
       type: object
       description: 가계부
-      properties:
-        id:
-          type: string
-        yyyymm:
-          type: string
-        yyyymmValue:
-          type: object
-          properties:
-            expenditure:
-              type: object
-              properties:
-                dd:
-                  type: string
-                ddValue:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Ledger'
-            income:
-              type: object
-              properties:
-                dd:
-                  type: string
-                ddValue:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Ledger'
-        allExpenditure:
-          type: number
-        allIncome:
-          type: number
-        maxExpenditure:
-          type: number
-        maxIncome:
-          type: number
+      additionalProperties:
+        type: object
+        properties:
+          expenditure:
+            type: object
+            properties:
+              additionalProperites:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ledger'
+          income:
+            type: object
+            properties:
+              additionalProperites:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ledger'
 
     Ledger:
       type: object
@@ -62,18 +45,18 @@ components:
         id:
           type: string
           required: false
-        userId:
+        nickname:
           type: string
-          required: true
+          required: false
         yyyy:
           type: number
-          required: true
+          required: false
         mm:
           type: number
-          required: true
+          required: false
         dd:
           type: number
-          required: true
+          required: false
         incomeOrExpenditure:
           type: string
           required: true
@@ -89,6 +72,12 @@ components:
         categoryId:
           type: string
           required: false
+
+    CreateSuccess:
+      type: object
+      properties:
+        id:
+          type: string
 
     Accountbooks:
       type: object
@@ -131,12 +120,6 @@ components:
         nickname:
           type: string
 
-    LoginInform:
-      type: object
-      properties:
-        userId:
-          type: string
-
     UserToken:
       type: object
       properties:
@@ -156,13 +139,33 @@ components:
           type: string
         color:
           type: string
+        isExist:
+          type: boolean
 
     CreateCategoryInform:
       type: object
       properties:
-        userId:
+        nickname:
           type: string
         name:
+          type: string
+
+    UpdateLedgerInform:
+      type: object
+      properties:
+        category:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        incomeOrExpenditure:
+          type: string
+
+    UpdateCategoryColorInform:
+      type: object
+      properties:
+        color:
           type: string
 
   prameters: null
@@ -205,6 +208,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateLedger'
+    CreateSuccessRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateSuccess'
     BadRequest:
       content:
         application/json:

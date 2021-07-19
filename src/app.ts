@@ -7,7 +7,6 @@ import cors from 'cors';
 import passport from 'passport';
 import dotenv from 'dotenv';
 import path from 'path';
-import { connect, disconnect } from '@/src/db';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import http from 'http';

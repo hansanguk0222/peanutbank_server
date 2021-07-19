@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { AccountbookSchema } from './Accountbook.schemas';
 import { CategorySchema } from './Category.schemas';
-import { findByUserIdOrCreateUser, findCategoriesByNickname, findUserByNickname, findCategoryByNicknameAndCategoryId, findAccoutbookByNickname } from '@/src/statics';
+import { findCategoriesByNickname, findUserByNickname, findCategoryByNicknameAndCategoryId, findAccoutbookByNickname, findUserByUserIdOrCreateUser } from '@/src/statics';
 import {
   updateImage,
   updateNickname,
@@ -32,11 +32,11 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.statics.findByUserIdOrCreateUser = findByUserIdOrCreateUser;
 UserSchema.statics.findUserByNickname = findUserByNickname;
 UserSchema.statics.findCategoriesByNickname = findCategoriesByNickname;
 UserSchema.statics.findCategoryByNicknameAndCategoryId = findCategoryByNicknameAndCategoryId;
 UserSchema.statics.findAccountbookNickname = findAccoutbookByNickname;
+UserSchema.statics.findUserByUserIdOrCreateUser = findUserByUserIdOrCreateUser;
 
 UserSchema.methods.updateImage = updateImage;
 UserSchema.methods.updateNickname = updateNickname;

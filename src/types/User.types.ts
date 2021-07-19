@@ -6,7 +6,7 @@ import { ILedgerDocument } from './Ledger.types';
 
 export interface IUser {
   userId: string;
-  OAuthType: string;
+  oauthType: string;
   nickname: string;
   image: string;
   accountbooks: IAccountBook[];
@@ -52,8 +52,8 @@ export interface IUserDocument extends IUser, Document {
 }
 
 export interface IUserModel extends Model<IUserDocument> {
-  findByUserIdOrCreateUser: (this: IUserModel, userId: string, OAuthType: string) => Promise<IUserDocument>;
   findCategoriesByNickname: (this: IUserModel, nickname: string) => Promise<ICategoryDocument[]>;
   findUserByNickname: (this: IUserModel, { nickname }: { nickname: string }) => Promise<IUserDocument>;
   findCategoryByNicknameAndCategoryId: (this: IUserModel, nickname: string, categoryId: string) => Promise<IUserDocument>;
+  findUserByUserIdOrCreateUser: (this: IUserModel, { userId, oauthType }: { userId: string; oauthType: string }) => Promise<IUserDocument>;
 }

@@ -11,7 +11,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
       const user = { nickname, image, oauthType };
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
-        maxAge: TIME.FIVE_MINUTE,
+        maxAge: TIME.FIVE_MINUTE * 1000,
       });
       res.status(200).json({ user });
       return;

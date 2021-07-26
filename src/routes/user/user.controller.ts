@@ -7,13 +7,21 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
   const { googleId } = req.body;
   if (verifyRequestData([googleId])) {
     try {
-      const { accessToken, image, nickname, oauthType } = await findUserByUserIdService({ userId: googleId, oauthType: 'google' });
-      const user = { nickname, image, oauthType };
+      const { accessToken, image, nickname, oauthType, refreshToken } = await findUserByUserIdService({ userId: googleId, oauthType: 'google' });
+      const userInfo = { nickname, image, oauthType };
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         maxAge: TIME.FIVE_MINUTE * 1000,
       });
-      res.status(200).json({ user });
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: TIME.TWO_MONTH * 1000,
+      });
+      res.cookie('nickname', nickname, {
+        httpOnly: true,
+        maxAge: TIME.TWO_MONTH * 1000,
+      });
+      res.status(200).json({ userInfo });
       return;
     } catch (err) {
       next(err);

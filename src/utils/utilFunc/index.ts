@@ -1,6 +1,28 @@
-import { STRINGARRAY } from '../constants';
+import { COLORSTRINGARRAY, NICKNAMESTRINGARRAY } from '../constants';
 import { IAccountBook, ILedger } from '@/src/types';
 import mongoose from 'mongoose';
+import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
+import { TIME } from '@/src/utils/constants';
+const client = new OAuth2Client(process.env.GOOGLE_LOGIN_CLIENT_ID);
+
+export const isGoogleIdTokenVerify = async ({ token }) => {
+  try {
+    await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_LOGIN_CLIENT_ID,
+    });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const createUserInfoToken = ({ nickname, image, oauthType }: { nickname: string; image: string; oauthType: string }): { accessToken: string; refreshToken: string } => {
+  const accessToken = jwt.sign({ nickname, image, oauthType }, process.env.ACCESS_TOKEN_KEY, { expiresIn: TIME.FIVE_MINUTE });
+  const refreshToken = jwt.sign({ nickname, image, oauthType }, process.env.REFRESH_TOKEN_KEY, { expiresIn: TIME.TWO_MONTH });
+  return { accessToken, refreshToken };
+};
 
 export const verifyRequestData = (arr: any[]): boolean =>
   arr.every((e) => {
@@ -10,9 +32,17 @@ export const verifyRequestData = (arr: any[]): boolean =>
 export const createRandomColor = () => {
   let color = '#';
   for (let i = 0; i < 6; i++) {
-    color += STRINGARRAY[Math.floor(Math.random() * 16)];
+    color += COLORSTRINGARRAY[Math.floor(Math.random() * 16)];
   }
   return color;
+};
+
+export const createRandomNickname = () => {
+  let nickname = '';
+  for (let i = 0; i < 10; i++) {
+    nickname += NICKNAMESTRINGARRAY[Math.floor(Math.random() * 62)];
+  }
+  return nickname;
 };
 
 export const getThreeYYYYMM = ({ yyyy, mm }: { yyyy: number; mm: number }) => {

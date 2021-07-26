@@ -1,20 +1,8 @@
 import { ICategoryDocument, ICategory, IUserDocument, IUserModel } from '@/src/types';
 import mongoose, { Document } from 'mongoose';
 import { CategoryModel } from '../models';
-
-export async function findByUserIdOrCreateUser(this: IUserModel, userId: string, OAuthType: string): Promise<IUserDocument> {
-  const user = await this.findOne({ userId });
-  if (user) {
-    return user;
-  } else {
-    //userId는 OAuth에서 발급한 내용
-    //OAutyType은 인증한 기관
-    //nickname은 랜덤으로 삽입
-    //image는 기본 이미지
-    //categories는 기본으로 생성되는 category들
-    this.create({ userId, OAuthType });
-  }
-}
+import { createRandomNickname } from '@/src/utils/utilFunc';
+import { CATEGORIES } from '@/src/utils/constants';
 
 export async function findUserByNickname(this: IUserModel, { nickname }: { nickname: string }): Promise<IUserDocument> {
   const user = await this.findOne({ nickname });
@@ -56,5 +44,24 @@ export async function findAccoutbookByNickname(this: IUserModel, { nickname }: {
       },
     },
   ])) as [IUserDocument];
+  return user;
+}
+
+export async function findUserByUserIdOrCreateUser(this: IUserModel, { userId, oauthType }: { userId: string; oauthType: string }): Promise<IUserDocument> {
+  const nickname = createRandomNickname();
+  const user = await this.findOneAndUpdate(
+    { userId },
+    {
+      $setOnInsert: {
+        userId,
+        oauthType,
+        nickname,
+        image: '임시로 넣는다.',
+        accountbooks: [],
+        categories: CATEGORIES,
+      },
+    },
+    { upsert: true, new: true }
+  );
   return user;
 }

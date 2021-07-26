@@ -1,9 +1,14 @@
+import mongoose from 'mongoose';
+
 export const TIME = {
   FIVE_MINUTE: 60 * 5,
   TWO_MONTH: 60 * 60 * 24 * 60,
 };
 
-export const STRINGARRAY = 'ABCDEF0123456789';
+export const COLORSTRINGARRAY = 'ABCDEF0123456789';
+
+export const NICKNAMESTRINGARRAY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
 export const TOKEN_TYPE = {
   ACCESS: 'ACCESS' as const,
   REFRESH: 'REFRESH' as const,
@@ -27,35 +32,88 @@ export const ERROR_MESSAGE = {
   GOOGLE_OAUTH_SIGNUP_FAILED: '구글 OAuth로 회원가입 실패',
 };
 
-export const USER_DEFAULT_PROFILE_URL = 'https://user-images.githubusercontent.com/61396464/100866119-8c399c00-34db-11eb-894f-3551297f5293.png';
-
-export const SOCKET_EVENT_TYPE = {
-  CONNECT: 'connect',
-  DISCONNECT: 'disconnect',
-  MESSAGE: 'message',
-  ENTER_ROOM: 'enter_room',
-  LEAVE_ROOM: 'leave_room',
-};
-
-export const SOCKET_MESSAGE_TYPE = {
-  THREAD: 'thread',
-  EMOJI: 'emoji',
-  USER: 'user',
-  CHANNEL: 'channel',
-  DM: 'dm',
-};
-
-export const THREAD_SUBTYPE = {
-  CREATE_THREAD: 'create_thread',
-  EDIT_THREAD: 'edit_thread',
-  DELETE_THREAD: 'delete_thread',
-};
-
-export const CHANNEL_SUBTYPE = {
-  UPDATE_CHANNEL: 'update_channel',
-  UPDATE_CHANNEL_TOPIC: 'update_channel_topic',
-  UPDATE_CHANNEL_UNREAD: 'update_channel_unread',
-  UPDATE_CHANNEL_USERS: 'update_channel_users',
-  MAKE_DM: 'make_dm',
-  FIND_AND_JOIN_CHANNEL: 'find_and_join_channel',
-};
+export const CATEGORIES = [
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '식비',
+    color: '#32a421',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '교통/차량',
+    color: '#ab23f2',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '문화생활',
+    color: '#56cd2e',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '마트/편의점',
+    color: '#12f234',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '패션/미용',
+    color: '#cc123f',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '생활용품',
+    color: '#bbcc12',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '주거/통신',
+    color: '#bacab2',
+    isExist: true,
+  },
+  {
+    name: '건강',
+    color: '#39ad2f',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '교육',
+    color: '#78c2d1',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '경조사/회비',
+    color: '#3acdf8',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '부모님',
+    color: '#ffa23a',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '기타',
+    color: '#dd2cab',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '현금',
+    color: '#23ffcd',
+    isExist: true,
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: '은행',
+    color: '#aab3f4',
+    isExist: true,
+  },
+];

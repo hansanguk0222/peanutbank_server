@@ -17,7 +17,7 @@ import {
 
 const UserSchema = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
-  OAuthType: { type: String, required: true },
+  oauthType: { type: String, required: true },
   nickname: { type: String, unique: true },
   image: String,
   accountbooks: [AccountbookSchema],

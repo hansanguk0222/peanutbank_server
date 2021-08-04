@@ -11,7 +11,6 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import http from 'http';
 import apiRouter from '@/src/routes';
-import cookieSession from 'cookie-session';
 
 dotenv.config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV == 'production' ? '.env' : '.env.dev'),
